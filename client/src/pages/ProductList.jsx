@@ -5,6 +5,8 @@ import Products from "../components/Products";
 import Newsletter from "../components/Newsletter";
 import Footer from "../components/Footer";
 import { mobile } from "../responsive";
+import { useLocation } from "react-router-dom";
+import { useState } from "react";
 
 const Container = styled.div`
 `;
@@ -39,49 +41,51 @@ const Option = styled.option`
 `;
 
 const ProductList = () => {
+  const location = useLocation();
+  const cat = location.pathname.split("/")[2];
+
+  const [filters, setFilters] = useState(cat);
+  const [sort, setSort] = useState("Newest");
+
+
   return (
     <Container>
+
       <Navbar />
       <Announcement />
-      <Title>Dresses</Title>
+      <Title>{filters}</Title>
       <FilterContainer>
         <Filter>
           <FilterText>Filter :</FilterText>
           <Select>
-            <Option disabled selected>
-              Folding
-            </Option>
-            <Option>Yes</Option>
-            <Option>No</Option>
-          </Select>
-          <Select>
-            <Option disabled selected>
+            <Option disabled>
               Material
             </Option>
-            <Option>Solid Wood</Option>
+            <Option value="Wood">Solid Wood</Option>
           </Select>
-          <Select>
-            <Option disabled selected>
+          <Select onChange={(event)=>{setFilters(event.target.value)}}>
+            <Option disabled>
               Product Type :
             </Option>
-            <Option>Beds</Option>
-            <Option>Sofa</Option>
-            <Option>Dining Tables</Option>
-            <Option>Chairs</Option>
-            <Option>Tables</Option>
-            <Option>Others</Option>
+            <Option value="Furniture">All</Option>
+            <Option value="Bed">Beds</Option>
+            <Option value="Sofa">Sofa</Option>
+            <Option value="DinningChair">Dining Chairs</Option>
+            <Option value="Chair">Chairs</Option>
+            <Option value="Table">Tables</Option>
+            <Option value="LivingRoom">Living Room</Option>
           </Select>
         </Filter>
         <Filter>
           <FilterText>Sort By:</FilterText>
-          <Select>
-            <Option selected>Newest</Option>
-            <Option>Price: Low to High</Option>
-            <Option>Price: High to Low</Option>
+          <Select  onChange={(event)=>{setSort(event.target.value)}}>
+            <Option value ="Newest">Newest</Option>
+            <Option value="Asc">Price: Low to High</Option>
+            <Option value="Desc">Price: High to Low</Option>
           </Select>
         </Filter>
       </FilterContainer>
-      <Products />
+      <Products filters={filters} sort={sort} />
       <Newsletter />
       <Footer />
     </Container>

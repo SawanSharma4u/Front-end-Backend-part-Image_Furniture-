@@ -5,6 +5,9 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Newsletter from "../components/Newsletter";
 import { mobile } from "../responsive";
+import { useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { publicRequest } from "../requestMedhods"
 
 const Container = styled.div``;
 
@@ -113,37 +116,50 @@ const Button = styled.button`
 `;
 
 const Product = () => {
+  const location = useLocation();
+  const id = location.pathname.split("/")[2];
+  const [product, setProduct] = useState({});
+  const [quantity, setQuantity] = useState(1);
+
+  useEffect(()=>{
+    const getProduct = async ()=>{
+      try{
+        const res = await publicRequest.get("/products/find/"+id);
+        console.log(res.data);
+        setProduct(res.data);
+      }catch{}
+    };
+    getProduct();
+  },[id]);
+  console.log(product.color);
+  
   return (
     <Container>
       <Navbar />
       <Announcement />
       <Wrapper>
         <ImgContainer>
-          <Image src="img/chair/chair00.jpg" />
+          <Image src={product.img} />
         </ImgContainer>
         <InfoContainer>
-          <Title>Dining Table</Title>
+          <Title>{product.title}</Title>
           <Desc>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-            venenatis, dolor in finibus malesuada, lectus ipsum porta nunc, at
-            iaculis arcu nisi sed mauris. Nulla fermentum vestibulum ex, eget
-            tristique tortor pretium ut. Curabitur elit justo, consequat id
-            condimentum ac, volutpat ornare.
+            {product.desc}
           </Desc>
-          <Price>$ 399</Price>
+          <Price>Rs. {product.price}</Price>
           <FilterContainer>
             <Filter>
               <FilterTitle>Color</FilterTitle>
-              <FilterColor color="black" />
-              <FilterColor color="darkblue" />
-              <FilterColor color="gray" />
+              {product.color?.map((c) => (
+                <FilterColor color={c} key={c} />
+              ))}
             </Filter>
           </FilterContainer>
           <AddContainer>
             <AmountContainer>
-              <Remove />
-              <Amount>1</Amount>
-              <Add />
+              <Remove onClick={()=>(quantity > 1 && setQuantity(quantity-1))} />
+              <Amount>{ quantity }</Amount>
+              <Add onClick={()=>(quantity < 10 && setQuantity(quantity+1))} />
             </AmountContainer>
             <Button>ADD TO CART</Button>
           </AddContainer>

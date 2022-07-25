@@ -1,6 +1,8 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { popularProducts } from "../data";
 import Product from "./Product";
+import axios from "axios";
 
 const Parent = styled.div`
 background-color: #93FFD8;
@@ -23,14 +25,40 @@ color: #533535;
 font-weight: 900;
 `;
 
-const Products = () => {
+const Products = ({filters, sort}) => {
+  const [products, setProducts] = useState([]);
+  useEffect(()=>{
+    const getProducts = async () => {
+      try{
+        const res = await axios.get(
+          filters 
+          ? `http://localhost:5000/api/products/?category=${filters}` 
+          : "http://localhost:5000/api/products");
+        setProducts(res.data);
+      }catch(err){}
+    };
+    getProducts();
+  },[filters]);
+
+  useEffect(()=>{
+    if(sort==="Newest"){
+      setProducts(prev => [...prev].sort((a,b)=> a.createdAt - b.createdAt ));
+    }
+    else if(sort === "Asc"){
+      setProducts(prev => [...prev].sort((a,b)=> a.price - b.price));
+    }
+    else {
+      setProducts(prev => [...prev].sort((a,b)=> b.price - a.price));
+    }
+  },[sort]);
+
   return (
     <Parent>
     <Header>
       Most Sold Products of Last Week
     </Header>
     <Container>
-      {popularProducts.map((item) => (
+      {products.map((item) => (
         <Product item={item} key={item.id} />
       ))}
     </Container>
