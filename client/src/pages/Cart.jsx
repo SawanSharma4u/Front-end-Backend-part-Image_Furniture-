@@ -1,9 +1,16 @@
 import { Add, Remove } from "@material-ui/icons";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { mobile } from "../responsive";
+import StripeCheckout from "react-stripe-checkout";
+import { useEffect, useState } from "react";
+import { userRequest } from "../requestMedhods";
+import { useNavigate } from "react-router-dom";
+
+const KEY = process.env.STRIPE_KEY;
 
 const Container = styled.div`
    letter-spacing: 1px;
@@ -161,6 +168,28 @@ const Button = styled.button`
 `;
 
 const Cart = () => {
+  const cart = useSelector(state=>state.cart);
+
+  const [stripeToken, setStripeToken] = useState(null);
+  const navigate = useNavigate();
+
+  const onToken = (token)=>{
+    setStripeToken(token);
+  };
+
+  useEffect(()=>{
+    const makeRequest = async () => {
+      try{
+        const res = await userRequest.post("/checkout/payment", {
+          tokenId: stripeToken,
+          amount: cart.total/100,
+        });
+        navigate("/success", {data:res.data})
+      }catch{}
+    };
+    stripeToken && makeRequest();
+  },[stripeToken, cart.total, navigate]);
+  
   return (
     <Container>
       <Navbar />
@@ -177,77 +206,65 @@ const Cart = () => {
         </Top>
         <Bottom>
           <Info>
-            <Product>
-              <ProductDetail>
-                <Image src="img/Sofa/sofa0.png" />
-                <Details>
-                  <ProductName>
-                    <b>Product:</b> Jolie Recliner
-                  </ProductName>
-                  <ProductId>
-                    <b>ID:</b> 0001
-                  </ProductId>
-                  <ProductColor color="#9CB4CC" />
-                  <ProductSize>
-                    <b>Seater:</b> one
-                  </ProductSize>
-                </Details>
-              </ProductDetail>
-              <PriceDetail>
-                <ProductAmountContainer>
-                  <Add />
-                  <ProductAmount>1</ProductAmount>
-                  <Remove />
-                </ProductAmountContainer>
-                <ProductPrice>$ 300</ProductPrice>
-              </PriceDetail>
-            </Product>
+            {cart.products.map(product => (
+              <Product>
+                <ProductDetail>
+                  <Image src={product.img} />
+                  <Details>
+                    <ProductName>
+                      <b>Product:</b> {product.title}
+                    </ProductName>
+                    <ProductId>
+                      <b>ID:</b> {product._id}
+                    </ProductId>
+                    <ProductColor color={product.color} />
+                    <ProductSize>
+                      <b>Dimension:</b> {product.dimension}
+                    </ProductSize>
+                  </Details>
+                </ProductDetail>
+                <PriceDetail>
+                  <ProductAmountContainer>
+                    <Add />
+                    <ProductAmount>{product.quantity}</ProductAmount>
+                    <Remove />
+                  </ProductAmountContainer>
+                  <ProductPrice>Rs. { product.price*product.quantity }</ProductPrice>
+                </PriceDetail>
+              </Product>
+              ))}
             <Hr />
-            <Product>
-              <ProductDetail>
-                <Image src="img/Table/2.jpg" />
-                <Details>
-                  <ProductName>
-                    <b>Product:</b> Entertainment Center
-                  </ProductName>
-                  <ProductId>
-                    <b>ID:</b> 0002
-                  </ProductId>
-                  <ProductColor color="#E7AB79" />
-                  <ProductSize>
-                    <b>Size:</b> Medium
-                  </ProductSize>
-                </Details>
-              </ProductDetail>
-              <PriceDetail>
-                <ProductAmountContainer>
-                  <Add />
-                  <ProductAmount>1</ProductAmount>
-                  <Remove />
-                </ProductAmountContainer>
-                <ProductPrice>$ 199.99</ProductPrice>
-              </PriceDetail>
-            </Product>
           </Info>
           <Summary>
             <SummaryTitle>ORDER SUMMARY</SummaryTitle>
             <SummaryItem>
               <SummaryItemText>Subtotal</SummaryItemText>
-              <SummaryItemPrice>$ 80</SummaryItemPrice>
+              <SummaryItemPrice>Rs. {cart.total}</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Estimated Shipping</SummaryItemText>
-              <SummaryItemPrice>$ 5.90</SummaryItemPrice>
+              <SummaryItemPrice>Rs. 49</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Shipping Discount</SummaryItemText>
-              <SummaryItemPrice>$ -5.90</SummaryItemPrice>
+              <SummaryItemPrice>Rs. -49</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem type="total">
               <SummaryItemText>Total</SummaryItemText>
-              <SummaryItemPrice>$ 80</SummaryItemPrice>
+              <SummaryItemPrice>Rs. {cart.total}</SummaryItemPrice>
             </SummaryItem>
-            <Button>CHECKOUT NOW</Button>
+            <StripeCheckout
+              name = "Image Furniture"
+              image = "https://thumbs.dreamstime.com/b/avatar-lying-man-couch-reading-book-icon-over-white-background-vector-illustration-165678598.jpg"
+              billingAddress
+              shippingAddress
+              description={`Your total is $${cart.total/100}`}
+              amount={cart.total}
+              token={onToken}
+              stripeKey={KEY}
+            >
+              <Button>CHECKOUT NOW</Button>
+            </StripeCheckout>
           </Summary>
         </Bottom>
       </Wrapper>

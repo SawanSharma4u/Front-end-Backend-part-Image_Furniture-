@@ -8,6 +8,8 @@ import { mobile } from "../responsive";
 import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { publicRequest } from "../requestMedhods"
+import { addProduct } from "../redux/cartRedux";
+import { useDispatch } from "react-redux";
 
 const Container = styled.div``;
 
@@ -120,6 +122,8 @@ const Product = () => {
   const id = location.pathname.split("/")[2];
   const [product, setProduct] = useState({});
   const [quantity, setQuantity] = useState(1);
+  const [color, setColor] = useState("");
+  const dispatch = useDispatch()
 
   useEffect(()=>{
     const getProduct = async ()=>{
@@ -131,7 +135,11 @@ const Product = () => {
     };
     getProduct();
   },[id]);
-  console.log(product.color);
+
+  const handleClick = () => {
+    //Update Cart
+    dispatch(addProduct({ ...product, quantity, color}));
+  };
   
   return (
     <Container>
@@ -151,7 +159,7 @@ const Product = () => {
             <Filter>
               <FilterTitle>Color</FilterTitle>
               {product.color?.map((c) => (
-                <FilterColor color={c} key={c} />
+                <FilterColor color={c} key={c} onClick={()=>setColor(c)} />
               ))}
             </Filter>
           </FilterContainer>
@@ -161,7 +169,7 @@ const Product = () => {
               <Amount>{ quantity }</Amount>
               <Add onClick={()=>(quantity < 10 && setQuantity(quantity+1))} />
             </AmountContainer>
-            <Button>ADD TO CART</Button>
+            <Button onClick={handleClick} >ADD TO CART</Button>
           </AddContainer>
         </InfoContainer>
       </Wrapper>
