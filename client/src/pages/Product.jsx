@@ -1,6 +1,5 @@
 import { Add, Remove } from "@material-ui/icons";
 import styled from "styled-components";
-import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Newsletter from "../components/Newsletter";
@@ -11,12 +10,14 @@ import { publicRequest } from "../requestMedhods"
 import { addProduct } from "../redux/cartRedux";
 import { useDispatch } from "react-redux";
 
-const Container = styled.div``;
+const Container = styled.div`
+  letter-spacing: 2px
+`;
 
 const Wrapper = styled.div`
   padding: 50px;
   display: flex;
-  ${mobile({ padding: "5px"})}
+  ${mobile({ padding: "5px", flexDirection: "column"})}
 `;
 
 const ImgContainer = styled.div`
@@ -26,30 +27,26 @@ const ImgContainer = styled.div`
 const Image = styled.img`
   width: 100%;
   height: 90vh;
-  object-fit: contain;
+  object-fit: cover;
   ${mobile({ height: "40vh" })}
 `;
 
 const InfoContainer = styled.div`
   flex: 1;
-  padding: 20px 50px;
+  padding: 0px 50px;
   ${mobile({ padding: "10px" })}
 `;
 
 const Title = styled.h1`
-  font-weight: 700;
-  letter-spacing: 1px;
+  font-weight: 500;
 `;
 
 const Desc = styled.p`
   margin: 20px 0px;
-  line-height: 1.5;
-  font-weight: 400;
-  padding-bottom: 10%;
 `;
 
 const Price = styled.span`
-  font-weight: 500;
+  font-weight: 300;
   font-size: 40px;
 `;
 
@@ -102,7 +99,7 @@ const Amount = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0px 10px;
+  margin: 0px 5px;
 `;
 
 const Button = styled.button`
@@ -129,7 +126,7 @@ const Product = () => {
     const getProduct = async ()=>{
       try{
         const res = await publicRequest.get("/products/find/"+id);
-        console.log(res.data);
+
         setProduct(res.data);
       }catch{}
     };
@@ -144,7 +141,6 @@ const Product = () => {
   return (
     <Container>
       <Navbar />
-      <Announcement />
       <Wrapper>
         <ImgContainer>
           <Image src={product.img} />
@@ -154,7 +150,7 @@ const Product = () => {
           <Desc>
             {product.desc}
           </Desc>
-          <Price>Rs. {product.price}</Price>
+          <Price>$. {product.price}</Price>
           <FilterContainer>
             <Filter>
               <FilterTitle>Color</FilterTitle>

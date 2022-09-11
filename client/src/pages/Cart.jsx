@@ -1,7 +1,6 @@
 import { Add, Remove } from "@material-ui/icons";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { mobile } from "../responsive";
@@ -13,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 const KEY = process.env.STRIPE_KEY;
 
 const Container = styled.div`
-   letter-spacing: 1px;
+letter-spacing: 2px
 `;
 
 const Wrapper = styled.div`
@@ -37,15 +36,13 @@ const TopButton = styled.button`
   padding: 10px;
   font-weight: 600;
   cursor: pointer;
-  letter-spacing: 1px;
   border: ${(props) => props.type === "filled" && "none"};
   background-color: ${(props) =>
-    props.type === "filled" ? "#2C3639" : "transparent"};
+    props.type === "filled" ? "black" : "transparent"};
   color: ${(props) => props.type === "filled" && "white"};
 `;
 
 const TopTexts = styled.div`
-  color: #3F4E4F;
   ${mobile({ display: "none" })}
 `;
 const TopText = styled.span`
@@ -77,9 +74,6 @@ const ProductDetail = styled.div`
 
 const Image = styled.img`
   width: 200px;
-  margin: 1%;
-  border: 1px solid #9CB4CC;
-  box-shadow: 5px 5px 30px #DAEAF1;
 `;
 
 const Details = styled.div`
@@ -161,8 +155,7 @@ const SummaryItemPrice = styled.span``;
 const Button = styled.button`
   width: 100%;
   padding: 10px;
-  background-color: #2C3639;
-  letter-spacing: 1px;
+  background-color: black;
   color: white;
   font-weight: 600;
 `;
@@ -181,7 +174,7 @@ const Cart = () => {
     const makeRequest = async () => {
       try{
         const res = await userRequest.post("/checkout/payment", {
-          tokenId: stripeToken,
+          tokenId: stripeToken.id,
           amount: cart.total/100,
         });
         navigate("/success", {data:res.data})
@@ -193,7 +186,6 @@ const Cart = () => {
   return (
     <Container>
       <Navbar />
-      <Announcement />
       <Wrapper>
         <Title>YOUR BAG</Title>
         <Top>
@@ -229,7 +221,7 @@ const Cart = () => {
                     <ProductAmount>{product.quantity}</ProductAmount>
                     <Remove />
                   </ProductAmountContainer>
-                  <ProductPrice>Rs. { product.price*product.quantity }</ProductPrice>
+                  <ProductPrice>$. { product.price*product.quantity }</ProductPrice>
                 </PriceDetail>
               </Product>
               ))}
@@ -239,19 +231,19 @@ const Cart = () => {
             <SummaryTitle>ORDER SUMMARY</SummaryTitle>
             <SummaryItem>
               <SummaryItemText>Subtotal</SummaryItemText>
-              <SummaryItemPrice>Rs. {cart.total}</SummaryItemPrice>
+              <SummaryItemPrice>$. {cart.total}</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Estimated Shipping</SummaryItemText>
-              <SummaryItemPrice>Rs. 49</SummaryItemPrice>
+              <SummaryItemPrice>$. 4.90</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Shipping Discount</SummaryItemText>
-              <SummaryItemPrice>Rs. -49</SummaryItemPrice>
+              <SummaryItemPrice>$. 4.90</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem type="total">
               <SummaryItemText>Total</SummaryItemText>
-              <SummaryItemPrice>Rs. {cart.total}</SummaryItemPrice>
+              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
             </SummaryItem>
             <StripeCheckout
               name = "Image Furniture"

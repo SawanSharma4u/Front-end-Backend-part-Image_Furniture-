@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { popularProducts } from "../data";
 import Product from "./Product";
 import axios from "axios";
 
 const Parent = styled.div`
-background-color: #93FFD8;
+background-color: #E8F9FD;
 `;
 
 const Container = styled.div`
@@ -21,7 +20,6 @@ letter-spacing: 8px;
 word-spacing: 12px;
 font-size: 40px;
 padding-top: 7%;
-color: #533535;
 font-weight: 900;
 `;
 

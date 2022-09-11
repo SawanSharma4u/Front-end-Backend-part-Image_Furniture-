@@ -6,7 +6,7 @@ import CategoriesItem from "./CategoriesItem";
 import { mobile } from "../responsive";
 
 const Parent = styled.div`
-background-color: #94B49F;
+background-color: #FFF8A9;
 `
 
 const Container = styled.div`
@@ -24,7 +24,7 @@ const Container = styled.div`
 const Arrow = styled.div`
   width: 50px;
   height: 50px;
-  background-color: #fff7f7;
+  background-color: #FFF8A0;
   border-radius: 50%;
   display: flex;
   align-items: center;

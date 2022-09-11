@@ -23,7 +23,7 @@ const verifyTokenAndAuthorization = (req, res, next) => {
             next()
         }
         else{
-            res.status(403).json("You are not allowed to do taht!");
+            res.status(403).json("You are not allowed to do that!");
         }
     });
 };
@@ -34,7 +34,7 @@ const verifyTokenAndAdmin = (req, res, next) => {
             next()
         }
         else{
-            res.status(403).json("You are not allowed to do taht!");
+            res.status(403).json("You are not allowed to do that!");
         }
     });
 };

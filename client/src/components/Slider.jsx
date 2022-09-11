@@ -17,13 +17,13 @@ const Container = styled.div`
 
 const Parent = styled.div`
   padding: 40px 10px 100px 10px;
-  background-color: #FFF8F3;  
+  background-color: white;  
 `
 
 const Arrow = styled.div`
   width: 50px;
   height: 50px;
-  background-color: #fff7f7;
+  background-color: #EDDFB3;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -51,7 +51,6 @@ const Slide = styled.div`
   height: 100%;
   display: flex;
   align-items: center;
-  background-color: #${props=> props.bg};
 `;
 
 const ImgContainer = styled.div`
@@ -109,7 +108,7 @@ const Slider = () => {
         </Arrow>
         <Wrapper slideIndex = {slideIndex}>
         {sliderItems.map((item) => {
-            return <Slide bg={item.bg} key = {item.id} >
+            return <Slide key = {item.id} >
                 <ImgContainer>
                     <Image src= {item.img} />
                 </ImgContainer>

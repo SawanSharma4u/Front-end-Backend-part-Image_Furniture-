@@ -8,7 +8,8 @@ import { Link } from "react-router-dom";
  
 const Container = styled.div`
   height: 80px;
-  background-color: #A3E4DB;
+  background-color: #2C3333;
+  color: #5A8F7B;
   ${mobile({ height: "50px" })}
 `;
 
@@ -31,6 +32,7 @@ const Left = styled.div`
 
 const Language = styled.span`
   font-size: 14px;
+  color: #FFF9CA;
   cursor: pointer;
   ${mobile({ display: "none" })}
 `;
@@ -44,7 +46,7 @@ const SearchContainer = styled.div`
 `;
 
 const Input = styled.input`
-  background-color: #A3E4DB;
+  background-color: #2C3333;
   border: none;
   ${mobile({ width: "50px" })}
 `;
@@ -56,11 +58,12 @@ const Center = styled.div`
 
 const Span = styled.span`
   font-family: 'Dancing Script', cursive;
-  color: white;
+  color: #F1F1F1;
 `;
 
 const Logo = styled.h1`
   font-family: 'Dancing Script', cursive;
+  color: #5A8F7B;
   letter-spacing: 2px;
   font-size: 45px;
   font-weight: bold;
@@ -79,6 +82,7 @@ const Right = styled.div`
 const MenuItem = styled.div`
   font-size: 14px;
   cursor: pointer;
+  color: #FFF9CA;
   margin-left: 25px;
   ${mobile({ fontSize: "12px", marginLeft: "10px" })}
 `;
@@ -92,16 +96,20 @@ const Navbar = () => {
         <Left>
           <Language>EN</Language>
           <SearchContainer>
-            <Input placeholder="Search" />
-            <Search style={{ color: "gray", fontSize: 16 }} />
+            <Input placeholder="Type" />
+            <Search style={{ color: "#FFF9CA", fontSize: 16 }} />
           </SearchContainer>
         </Left>
         <Center>
-          <Logo><Span>Image</Span>Furniture</Logo>
+        <Link to="/" style={{ textDecoration: 'none',  }}><Logo><Span>Image</Span>Furniture</Logo></Link>
         </Center>
         <Right>
-          <MenuItem>REGISTER</MenuItem>
-          <MenuItem>SIGN IN</MenuItem>
+          <Link to="/register">
+            <MenuItem>REGISTER</MenuItem>
+          </Link>
+          <Link to="/login">
+            <MenuItem>SIGN IN</MenuItem>
+          </Link>
           <Link to="/cart">
             <MenuItem>
               <Badge badgeContent={quantity} color="primary" overlap="rectangular">

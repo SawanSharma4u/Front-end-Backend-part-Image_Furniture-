@@ -13,7 +13,8 @@ import {
   const Container = styled.div`
     display: flex;
     padding: 100px 20px 40px;
-    background-color: #4D4C7D;
+    background-color: #2C3333;
+    color: #FFF9CA;
     ${mobile({ flexDirection: "column" })}
   `;
   
@@ -27,14 +28,13 @@ import {
   
   const Logo = styled.h1`
   font-family: 'Dancing Script', cursive;
-  color: white;
+  color: #5A8F7B;
   font-size: 40px;
   font-weight: 900;
   `;
   
   const Desc = styled.p`
     margin: 20px 0px;
-    color: #EEF3D2;
     font-weight: 500;
     line-height: 1.5;
     letter-spacing: 1px;
@@ -42,7 +42,7 @@ import {
 
   const Span = styled.span`
     font-family: 'Dancing Script', cursive;
-    color: yellow;
+    color: #F1F1F1;
   `
   
   const SocialContainer = styled.div`
@@ -53,7 +53,6 @@ import {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    color: white;
     background-color: #${(props) => props.color};
     display: flex;
     align-items: center;
@@ -68,14 +67,12 @@ import {
   `;
   
   const Title = styled.h3`
-    color: white;
     margin-bottom: 30px;
   `;
   
   const List = styled.ul`
     margin: 0;
     padding: 0;
-    color: #EEF3D2;
     font-weight: 500;
     letter-spacing: 1px;
     list-style: none;
@@ -92,12 +89,10 @@ import {
     flex: 1;
     padding-left: 30px;
     padding-top: 20px;
-    ${mobile({ backgroundColor: "#fff8f8" })}
   `;
   
   const ContactItem = styled.div`
     margin-bottom: 20px;
-    color: #EEF3D2;
     font-weight: 500;
     letter-spacing: 1px;
     display: flex;

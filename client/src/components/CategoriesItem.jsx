@@ -30,7 +30,7 @@ const Info = styled.div`
 `;
 
 const Title = styled.h1`
-    color:white;
+    color:#FFFDE3;
     margin-bottom: 20px;
     letter-spacing: 2px;
 `;
@@ -40,7 +40,7 @@ const Button = styled.button`
     margin-top: 10px;
     border:none;
     padding: 10px;
-    background-color: f5fafd;
+    background-color: #FFF8B9;
     color:black;
     cursor: pointer;
     font-weight: 900;
